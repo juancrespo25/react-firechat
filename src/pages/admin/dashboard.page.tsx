@@ -8,10 +8,10 @@ const DashboardPage = () => {
   const { logout } = useAuthAction();
 
   return (
-    <div className="container mx-auto p-4">
+    <div>
       <h1>Dashboard Page</h1>
-      <p>Welcome, {user?.displayName || "Guest"}!</p>
-      <p>Email: {user?.email || "Not provided"}</p>
+      <p>Welcome, {user!.displayName || "Guest"}!</p>
+      <p>Email: {user!.email || "Not provided"}</p>
       <Button
         variant={"destructive"}
         onClick={logout}
