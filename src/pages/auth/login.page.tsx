@@ -34,19 +34,7 @@ const LoginPage = () => {
     const response = await login(data);
     if (!response.success) {
       if (response.error?.code === "auth/invalid-login-credentials") {
-
-        //form.setError("email", {
-        //  type: "manual",
-        // message: "Invalid email"
-        //});
-
-        //form.setError("password", {
-        // type: "manual",
-        // message: "Invalid password"
-        //});*
-
         toast.error("Invalid email or password");
-
       }
     }
   }
