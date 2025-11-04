@@ -2,6 +2,7 @@ import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithEmailAndP
 import type { AuthError } from "firebase/auth";
 import { useState } from "react";
 import { useAuth } from "reactfire";
+import { useUserActions } from "./use-user-action";
 
 interface AuthActionResponse {
     success: boolean;
@@ -10,6 +11,8 @@ interface AuthActionResponse {
 export const useAuthAction = () => {
     const [loading, setLoading] = useState(false);
     const auth = useAuth();
+
+    const { createOrUpdateUser } = useUserActions();
 
     const login = async (data: { email: string, password: string }): Promise<AuthActionResponse> => {
 
@@ -41,6 +44,8 @@ export const useAuthAction = () => {
                     displayName: data.displayName
                 })
 
+                await createOrUpdateUser(currentUser.user);
+
                 // Forzar la recarga dek usuario para sincronizar con ReactFire
                 await currentUser.user.reload();
             }
@@ -66,7 +71,9 @@ export const useAuthAction = () => {
 
         try {
             const provider = new GoogleAuthProvider();
-            await signInWithPopup(auth, provider);
+            const data = await signInWithPopup(auth, provider);
+
+            await createOrUpdateUser(data.user);
 
             return {
                 success: true,
